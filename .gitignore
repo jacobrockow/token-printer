@@ -1,0 +1,26 @@
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Node
+node_modules/
+dist/
+
+# Generated assets
+backend/app/generated/previews/*
+backend/app/generated/temp/*
+!backend/app/generated/previews/.gitkeep
+!backend/app/generated/temp/.gitkeep
