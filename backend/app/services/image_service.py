@@ -4,13 +4,22 @@ from pathlib import Path
 import requests
 from PIL import Image, ImageOps, ImageStat
 
+from app.config import SCRYFALL_USER_AGENT
+
 
 class ImageService:
     def __init__(self, timeout: int = 15) -> None:
         self.timeout = timeout
+        self.session = requests.Session()
+        self.session.headers.update(
+            {
+                "User-Agent": SCRYFALL_USER_AGENT,
+                "Accept": "image/avif,image/webp,image/*,*/*;q=0.8",
+            }
+        )
 
     def download_image(self, url: str) -> Image.Image:
-        response = requests.get(url, timeout=self.timeout)
+        response = self.session.get(url, timeout=self.timeout)
         response.raise_for_status()
         return Image.open(io.BytesIO(response.content)).convert("L")
 
