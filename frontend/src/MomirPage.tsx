@@ -5,6 +5,7 @@ import { rollMomir } from "./api/momir";
 import { printThermal } from "./api/print";
 import ThermalPreviewPanel from "./components/ThermalPreviewPanel";
 import type { PreviewResponse } from "./types/preview";
+import "./styles/momir.css";
 
 export default function MomirPage() {
   const [manaValue, setManaValue] = useState(1);
@@ -52,19 +53,11 @@ export default function MomirPage() {
   }
 
   return (
-    <main className="app-shell">
-      <div className="app-header">
-        <div>
-          <h1 className="app-title">Momir Printer</h1>
-          <p className="app-status">
-            Roll a random paper creature with the selected mana value and print it as a token.
-          </p>
-        </div>
-        <nav className="app-nav" aria-label="Application pages">
-          <a href="/">Token Search</a>
-          <a href="/momir" aria-current="page">Momir</a>
-        </nav>
-      </div>
+    <main className="app-shell momir-shell">
+      <h1 className="app-title">Momir Printer</h1>
+      <p className="app-status">
+        Roll a random paper creature with the selected mana value and print it as a token.
+      </p>
 
       <section className="panel momir-controls">
         <form className="momir-form" onSubmit={handleRoll}>
