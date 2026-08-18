@@ -4,10 +4,10 @@ from typing import Any
 
 import requests
 
+from app.config import SCRYFALL_USER_AGENT
 from app.models.card import CardResult
 
 SCRYFALL_API = "https://api.scryfall.com"
-USER_AGENT = "token-printer-webapp/0.1"
 TIMEOUT = 30
 
 logger = logging.getLogger(__name__)
@@ -95,7 +95,7 @@ class ScryfallService:
         self.session = requests.Session()
         self.session.headers.update(
             {
-                "User-Agent": USER_AGENT,
+                "User-Agent": SCRYFALL_USER_AGENT,
                 "Accept": "application/json",
             }
         )
