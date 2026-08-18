@@ -1,4 +1,5 @@
 import DesktopApp from "./DesktopApp";
+import MomirPage from "./MomirPage";
 import MobilePrintPage from "./components/MobilePrintPage";
 
 export default function App() {
@@ -6,6 +7,10 @@ export default function App() {
 
   if (path === "/mobile") {
     return <MobilePrintPage />;
+  }
+
+  if (path === "/momir") {
+    return <MomirPage />;
   }
 
   return <DesktopApp />;
