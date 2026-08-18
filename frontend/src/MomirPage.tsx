@@ -90,6 +90,7 @@ export default function MomirPage() {
           onPrint={() => handlePrint()}
           printLoading={printLoading}
           printStatus={printStatus}
+          emptyMessage="Choose a mana value and roll to generate a creature."
         />
       </div>
     </main>
