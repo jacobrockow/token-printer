@@ -7,6 +7,12 @@
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+credentials.json
+secrets.json
 
 # Python
 __pycache__/
