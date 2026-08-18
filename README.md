@@ -2,6 +2,12 @@
 
 Containerized web app for searching Magic: The Gathering cards and tokens, generating thermal-friendly previews, and printing to a network ESC/POS receipt printer.
 
+## Features
+
+- Search Magic cards and tokens, generate thermal previews, and print them.
+- Mobile-friendly direct printing at `/mobile`.
+- Momir mode at `/momir`: choose a mana value, roll a random paper creature with that mana value, and automatically print it. The rolled card remains on screen for previewing or retrying the print.
+
 ## Configuration
 
 Copy the example environment file and set the printer address:
