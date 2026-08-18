@@ -8,6 +8,7 @@ type ThermalPreviewPanelProps = {
   onPrint: () => void;
   printLoading: boolean;
   printStatus: string;
+  emptyMessage?: string;
 };
 
 export default function ThermalPreviewPanel({
@@ -16,18 +17,15 @@ export default function ThermalPreviewPanel({
   status,
   onPrint,
   printLoading,
-  printStatus
+  printStatus,
+  emptyMessage = "Select a search result to generate a preview."
 }: ThermalPreviewPanelProps) {
   return (
     <section className="panel">
       <h2>Preview</h2>
       <p className="app-status">{loading ? "Generating preview..." : status}</p>
 
-      {!preview && (
-        <p className="empty-state">
-          Select a search result to generate a preview.
-        </p>
-      )}
+      {!preview && <p className="empty-state">{emptyMessage}</p>}
 
       {preview && (
         <div className="preview-stack">

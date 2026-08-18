@@ -1,5 +1,8 @@
 import DesktopApp from "./DesktopApp";
+import MomirPage from "./MomirPage";
+import AppNav from "./components/AppNav";
 import MobilePrintPage from "./components/MobilePrintPage";
+import "./styles/navigation.css";
 
 export default function App() {
   const path = window.location.pathname;
@@ -8,5 +11,10 @@ export default function App() {
     return <MobilePrintPage />;
   }
 
-  return <DesktopApp />;
+  return (
+    <>
+      <AppNav />
+      {path === "/momir" ? <MomirPage /> : <DesktopApp />}
+    </>
+  );
 }

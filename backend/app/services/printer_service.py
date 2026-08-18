@@ -3,6 +3,8 @@ from pathlib import Path
 
 from PIL import Image
 
+from app.config import CUT_AFTER_PRINT, PRINT_BOTTOM_MARGIN_MM, PRINTER_DPI
+
 
 class PrinterService:
     def __init__(self, host: str, port: int = 9100) -> None:
@@ -54,6 +56,17 @@ class PrinterService:
 
         return bytes(data)
 
+    def _bottom_margin_raster(self, width: int) -> bytes:
+        if PRINT_BOTTOM_MARGIN_MM <= 0:
+            return b""
+
+        margin_height = max(
+            1,
+            round((PRINT_BOTTOM_MARGIN_MM / 25.4) * PRINTER_DPI),
+        )
+        margin = Image.new("1", (width, margin_height), 1)
+        return self._image_to_escpos_raster(margin)
+
     def print_image(self, image_path: str | Path) -> None:
         image_path = Path(image_path)
 
@@ -64,8 +77,10 @@ class PrinterService:
             payload.extend(b"\x1b@")  # Initialize
             payload.extend(b"\x1ba\x01")  # Center alignment
             payload.extend(self._image_to_escpos_raster(image))
-            payload.extend(b"\n\n\n")
-            payload.extend(b"\x1d\x56\x00")  # Full cut
+            payload.extend(self._bottom_margin_raster(image.width))
+
+            if CUT_AFTER_PRINT:
+                payload.extend(b"\x1d\x56\x00")  # Full cut
 
         with socket.create_connection((self.host, self.port), timeout=5) as sock:
             sock.sendall(payload)
