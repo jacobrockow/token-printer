@@ -1,11 +1,12 @@
 from pydantic import BaseModel
 
+from app.config import PRINTER_WIDTH
 from app.models.card import CardResult
 
 
 class PreviewRequest(BaseModel):
     scryfall_id: str
-    width: int = 576
+    width: int = PRINTER_WIDTH
 
 
 class PreviewResponse(BaseModel):
