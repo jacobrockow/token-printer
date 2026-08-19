@@ -1,5 +1,5 @@
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import SearchBar from "./components/SearchBar";
 import CardGrid from "./components/CardGrid";
 import ThermalPreviewPanel from "./components/ThermalPreviewPanel";
@@ -25,6 +25,7 @@ export default function DesktopApp() {
 
   const [printLoading, setPrintLoading] = useState(false);
   const [printStatus, setPrintStatus] = useState("");
+  const previewRef = useRef<HTMLDivElement>(null);
 
   async function handleSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -59,12 +60,24 @@ export default function DesktopApp() {
     }
   }
 
+  function focusPreviewOnMobile() {
+    if (!window.matchMedia("(max-width: 700px)").matches) return;
+
+    requestAnimationFrame(() => {
+      previewRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+  }
+
   async function handleSelect(card: CardResult) {
     setSelectedCard(card);
     setPreview(null);
     setPrintStatus("");
     setPreviewLoading(true);
     setPreviewStatus("Generating preview...");
+    focusPreviewOnMobile();
 
     try {
       const data = await generatePreview(card.scryfall_id, 540);
@@ -109,8 +122,8 @@ export default function DesktopApp() {
 
       <p className="app-status">{searchStatus}</p>
 
-      <div className="layout-grid">
-        <section className="panel">
+      <div className={`layout-grid${selectedCard ? " has-selection" : ""}`}>
+        <section className="panel results-panel">
           <h2>Search Results</h2>
           <CardGrid
             results={results}
@@ -119,14 +132,16 @@ export default function DesktopApp() {
           />
         </section>
 
-        <ThermalPreviewPanel
-          preview={preview}
-          loading={previewLoading}
-          status={previewStatus}
-          onPrint={handlePrint}
-          printLoading={printLoading}
-          printStatus={printStatus}
-        />
+        <div className="preview-column" ref={previewRef}>
+          <ThermalPreviewPanel
+            preview={preview}
+            loading={previewLoading}
+            status={previewStatus}
+            onPrint={handlePrint}
+            printLoading={printLoading}
+            printStatus={printStatus}
+          />
+        </div>
       </div>
     </main>
   );
