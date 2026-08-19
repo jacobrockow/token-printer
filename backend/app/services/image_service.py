@@ -4,7 +4,11 @@ from pathlib import Path
 import requests
 from PIL import Image, ImageOps, ImageStat
 
-from app.config import SCRYFALL_USER_AGENT
+from app.config import (
+    SCRYFALL_USER_AGENT,
+    THERMAL_BRIGHTNESS_DARK,
+    THERMAL_BRIGHTNESS_NORMAL,
+)
 
 
 class ImageService:
@@ -48,11 +52,10 @@ class ImageService:
         height = max(1, round(image.height * ratio))
         return image.resize((width, height), Image.Resampling.LANCZOS)
 
-    def maybe_lighten(self, image: Image.Image) -> Image.Image:
+    def lighten_for_thermal(self, image: Image.Image) -> Image.Image:
         mean = ImageStat.Stat(image).mean[0]
-        if mean < 110:
-            return image.point(lambda p: min(255, int(p * 1.15)))
-        return image
+        factor = THERMAL_BRIGHTNESS_DARK if mean < 110 else THERMAL_BRIGHTNESS_NORMAL
+        return image.point(lambda p: min(255, int(p * factor)))
 
     def dither_to_bw(self, image: Image.Image) -> Image.Image:
         return image.convert("1", dither=Image.Dither.FLOYDSTEINBERG)

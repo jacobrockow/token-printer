@@ -22,7 +22,7 @@ class PreviewService:
         combined = self.images.autocontrast_with_border(combined)
 
         grayscale = self.images.resize_for_width(combined, width)
-        grayscale = self.images.maybe_lighten(grayscale)
+        grayscale = self.images.lighten_for_thermal(grayscale)
 
         thermal = self.images.dither_to_bw(grayscale)
 
